@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>Kan ik zwemmen?</title>
+        <link href="http://floort.net/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    </head>
+    <body onload="getLoc()">
+    <script>
+        function getLoc() {
+            if (! navigator.geolocation) {
+                alert("Uw browser ondersteund geen geolocatie.");
+                return 0;
+            }
+            navigator.geolocation.getCurrentPosition(getData)
+        }
+        function getData(position) {
+            var formData = new FormData();
+            formData.append('Lat', position.coords.latitude);
+            formData.append('Lon', position.coords.longitude);
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/data', true);
+            xhr.onload = showData;
+            xhr.send(formData);
+        }
+        function showData() {
+            var content = document.getElementById("content");
+            content.innerHTML = this.responseText;
+        }
+    </script>
+    <div id="content" class="hero-unit">Pagina wordt geladen..</div>
+    </body>
+</html>
